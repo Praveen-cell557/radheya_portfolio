@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Praveen Rathod — Digital Forensics &amp; Security</title>
+<meta name="theme-color" content="#05060a">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05060a;--ink:#eef0f7;--dim:#8d94a8;--line:rgba(255,255,255,.1);--gl:rgba(255,255,255,.05);--red:#ff2d4f;--cy:#4de1ff;--ok:#3ddc97;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px;background:var(--bg)}
+body{font-family:'Space Grotesk',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;overflow-x:hidden}
+a{color:var(--cy);text-decoration:none}.m{font-family:'JetBrains Mono',monospace}
+.w{max-width:1120px;margin:0 auto;padding:0 22px;position:relative;z-index:2}
+#pr{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--red),var(--cy));z-index:99;transition:width .15s linear}
+/* background (static, no motion) */
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+#bg::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 80% 20%,rgba(255,45,79,.14),transparent 65%),radial-gradient(ellipse 50% 40% at 5% 90%,rgba(77,225,255,.08),transparent 60%)}
+#bgimg{position:absolute;inset:0;background:center/cover;opacity:.25}
+#grid{position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px) 0 0/50px 50px,linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px) 0 0/50px 50px;mask-image:radial-gradient(circle at 50% 30%,#000,transparent 80%)}
+/* reveal — simple fade only */
+.rv{opacity:0;transition:opacity .5s ease}
+.rv.in{opacity:1}
+.g{position:relative;background:var(--gl);border:1px solid var(--line);border-radius:18px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:border-color .2s}
+.g:hover{border-color:rgba(255,45,79,.5)}
+/* nav */
+nav{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:50;background:rgba(5,6,10,.75);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+nav .w{display:flex;align-items:center;justify-content:space-between;height:58px}
+.br{font-weight:700;color:var(--ink)}.br i{color:var(--red);font-style:normal}
+.ls{display:flex;gap:18px;font-size:.8rem}.ls a{color:var(--dim)}.ls a:hover{color:var(--ink)}
+.bu{display:none;background:none;border:1px solid var(--line);color:var(--ink);width:40px;height:40px;border-radius:10px;font-size:1.1rem}
+@media(max-width:860px){.bu{display:block}.ls{display:none;position:absolute;top:58px;left:0;right:0;flex-direction:column;gap:0;background:#05060af5}.ls.o{display:flex}.ls a{padding:14px 22px;border-top:1px solid var(--line)}}
+/* hero — simple stacked layout: intro first, photo after, then stats */
+.hero{min-height:100vh;padding:110px 0 40px;display:flex;align-items:center}
+.hg{max-width:640px;margin:0 auto}
+.st{display:inline-flex;gap:10px;align-items:center;font-size:.76rem;color:var(--ok);border:1px solid rgba(61,220,151,.35);background:rgba(61,220,151,.07);padding:6px 14px;border-radius:99px}
+.st b{width:8px;height:8px;border-radius:50%;background:var(--ok)}
+h1{font-size:clamp(2.6rem,8vw,4.6rem);line-height:1.02;letter-spacing:-.03em;margin:20px 0 16px;background:linear-gradient(100deg,#fff 25%,var(--red) 60%,var(--cy));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.role{color:var(--dim);font-size:1.08rem;max-width:560px}.role b{color:var(--ink)}
+.intro{color:var(--dim);font-size:1.02rem;max-width:560px;margin-top:14px}.intro b{color:var(--ink)}
+.tm{margin-top:24px;max-width:560px;overflow:hidden;font-size:.76rem}
+.tb{display:flex;gap:7px;padding:10px 14px;border-bottom:1px solid var(--line)}.tb i{width:9px;height:9px;border-radius:50%;background:#2a2e3b}
+.tm pre{padding:14px 16px;min-height:190px;white-space:pre-wrap;line-height:1.7;color:var(--dim)}
+.tm .c{color:var(--ok)}.tm .h{color:var(--ink)}
+/* photo — comes after the intro/terminal block */
+.pc{position:relative;max-width:280px;margin:34px auto 0}
+.ph{position:relative;aspect-ratio:4/5;border-radius:26px;overflow:hidden;background:#0a0c13;border:1px solid var(--line)}
+.slot{display:block;position:relative;cursor:pointer;overflow:hidden}
+.slot input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
+.slot.has img{display:block}.slot.has .pl{display:none}
+.pl{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--dim);font-size:.82rem;border:2px dashed rgba(255,45,79,.4);border-radius:inherit}
+.pl b{font-size:2rem;color:var(--red);line-height:1}
+.tg{position:absolute;z-index:3;font-size:.7rem;padding:6px 12px;border-radius:99px;background:rgba(5,6,10,.8);border:1px solid var(--line)}
+.tg:nth-of-type(1){top:8%;left:-14px;color:var(--red)}.tg:nth-of-type(2){top:46%;right:-12px;color:var(--cy)}.tg:nth-of-type(3){bottom:9%;left:-10px;color:var(--ok)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:50px}
+@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{padding:20px}.stat .n{font-size:2.2rem;font-weight:700;background:linear-gradient(90deg,#fff,var(--cy));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}.stat .l{font-size:.76rem;color:var(--dim)}
+/* sections */
+section{padding:90px 0}
+.ey{color:var(--red);font-size:.8rem;margin-bottom:8px}
+h2{font-size:clamp(2rem,5vw,3.3rem);letter-spacing:-.03em;line-height:1.1;margin-bottom:26px}
+h2::after{content:"";display:block;width:70px;height:3px;margin-top:10px;background:var(--red)}
+.ab{display:grid;grid-template-columns:1fr 1.2fr;gap:48px;align-items:center}@media(max-width:860px){.ab{grid-template-columns:1fr}}
+.ab p{color:var(--dim);margin-bottom:14px}
+.rings{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}@media(max-width:520px){.rings{grid-template-columns:repeat(2,1fr)}}
+.rg{padding:18px 10px;text-align:center}
+.dl{--p:0;width:92px;aspect-ratio:1;margin:0 auto 10px;border-radius:50%;display:grid;place-items:center;position:relative;background:conic-gradient(var(--red),var(--cy) calc(var(--p)*1%),rgba(255,255,255,.08) 0);transition:background 1s ease}
+.dl::before{content:"";position:absolute;inset:7px;border-radius:50%;background:#0a0c13}.dl span{position:relative;font-weight:700;color:var(--cy);font-size:.9rem}
+.rg b{display:block;font-size:.85rem}.rg small{font-size:.66rem;color:var(--dim)}
+.mq{display:flex;flex-wrap:wrap;gap:10px 28px;margin:0 0 26px;border-block:1px solid var(--line);padding:14px 0;color:var(--dim);font-size:.85rem}
+.mq span::before{content:"◆ ";color:var(--red)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.chip{font:inherit;font-family:'JetBrains Mono',monospace;font-size:.74rem;border:1px solid var(--line);color:var(--dim);background:var(--gl);padding:8px 16px;border-radius:99px;cursor:pointer}
+.chip.on{color:var(--ink);border-color:var(--red)}
+.tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.tool{padding:16px;display:flex;gap:14px;align-items:center}
+.ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:.72rem;font-weight:700;color:var(--cy);background:rgba(77,225,255,.09);border:1px solid rgba(77,225,255,.25);flex-shrink:0}
+.tool small{display:block;color:var(--dim);font-size:.74rem}
+/* projects carousel */
+.car{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 22px 24px;margin:0 -22px}
+.pj{flex:0 0 min(420px,84vw);scroll-snap-align:start;padding:28px;overflow:hidden}
+.pj .big{font-size:5rem;font-weight:700;line-height:1;color:transparent;-webkit-text-stroke:1.5px var(--red);font-family:'JetBrains Mono',monospace}
+.pj h3{font-size:1.35rem;margin:6px 0 10px}.pj p{color:var(--dim);font-size:.92rem;margin-bottom:16px}
+.pills{display:flex;flex-wrap:wrap;gap:6px}.pill{font-size:.68rem;color:var(--dim);border:1px solid var(--line);padding:3px 10px;border-radius:99px;font-family:'JetBrains Mono',monospace}
+.pj a{display:inline-block;margin-top:16px;font-weight:700;font-size:.9rem}
+/* findings */
+.fg{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}@media(max-width:800px){.fg{grid-template-columns:1fr}}
+.fd{overflow:hidden;padding:0}.fd .slot{aspect-ratio:16/10}
+.fb{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:10px;position:relative;z-index:2;background:rgba(5,6,10,.6)}
+.fb .o{font-size:1.2rem;font-weight:700}
+.bd{font-size:.62rem;color:var(--ok);border:1px solid rgba(61,220,151,.5);padding:3px 10px;border-radius:99px;font-family:'JetBrains Mono',monospace}
+.fd.nat{grid-column:1/-1;display:grid;grid-template-columns:1.1fr 1fr;border-color:rgba(255,120,30,.5)}
+@media(max-width:800px){.fd.nat{grid-template-columns:1fr}}
+.nat .slot{aspect-ratio:auto;min-height:250px}
+.nat .fb{flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:26px;background:linear-gradient(transparent,rgba(255,60,0,.12))}
+.nat .o{font-size:2.6rem;background:linear-gradient(#fff,#ffb347,#ff4d1c);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.nat .bd{color:#ffb347;border-color:#ff8a3d}
+/* thm */
+.th{display:grid;grid-template-columns:.9fr 1.1fr;overflow:hidden}@media(max-width:800px){.th{grid-template-columns:1fr}}
+.th .slot{min-height:320px}.tbd{padding:30px}
+.rank{font-size:clamp(3rem,7vw,4.6rem);font-weight:700;letter-spacing:-.04em;line-height:1;background:linear-gradient(90deg,#fff,var(--red));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.ts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}.ts .n{font-size:1.5rem;font-weight:700}.ts .l{font-size:.72rem;color:var(--dim)}
+.pb{height:10px;border-radius:9px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:22px}
+.fill{height:100%;width:0;background:linear-gradient(90deg,var(--red),var(--cy));transition:width 1.2s ease}
+/* certs */
+.certs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}@media(max-width:900px){.certs{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.certs{grid-template-columns:1fr}}
+.cert{padding:16px;display:flex;gap:14px;align-items:center}.cert.hide{display:none}
+.lg{width:52px;height:52px;border-radius:14px;flex-shrink:0;display:grid;place-items:center;font-weight:700;font-size:.9rem;color:#fff;background:linear-gradient(135deg,var(--c),color-mix(in srgb,var(--c) 45%,#000))}
+.cert small{display:block;font-size:.66rem;color:var(--cy);font-family:'JetBrains Mono',monospace}.cert b{display:block;font-size:.92rem}.cert span{font-size:.72rem;color:var(--dim)}
+/* bento */
+.bt{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}@media(max-width:860px){.bt{grid-template-columns:repeat(2,1fr)}}@media(max-width:540px){.bt{grid-template-columns:1fr}}
+.ac{padding:24px;overflow:hidden}.ac .ai{font-size:2rem;margin-bottom:10px}.ac h3{font-size:1.05rem;margin-bottom:6px}.ac p{color:var(--dim);font-size:.88rem}
+.ac.wd{grid-column:span 2}.ac.ft{grid-column:span 2;grid-row:span 2;display:flex;flex-direction:column;justify-content:flex-end}
+@media(max-width:540px){.ac.wd,.ac.ft{grid-column:auto;grid-row:auto}}
+.num{font-size:clamp(3.6rem,10vw,6.6rem);font-weight:700;line-height:1;letter-spacing:-.05em;background:linear-gradient(90deg,#fff,var(--red),var(--cy));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.ctf{background:radial-gradient(circle at 85% 10%,rgba(255,45,79,.22),transparent 55%),var(--gl);border-color:rgba(255,45,79,.4)}
+/* contact */
+.cta{padding:50px 26px;text-align:center;margin-bottom:18px;background:radial-gradient(circle at 20% 15%,rgba(255,45,79,.16),transparent 55%),radial-gradient(circle at 85% 85%,rgba(77,225,255,.1),transparent 55%),var(--gl)}
+.cta h3{font-size:clamp(1.7rem,5vw,2.8rem);margin-bottom:10px}.cta p{color:var(--dim);max-width:500px;margin:0 auto}
+.cg{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}@media(max-width:700px){.cg{grid-template-columns:1fr}}
+.cc{padding:22px;display:flex;align-items:center;gap:18px;color:var(--ink);word-break:break-word}
+.cl{width:60px;height:60px;border-radius:18px;flex-shrink:0;display:grid;place-items:center;font-size:1.6rem;background:var(--c)}
+.cc small{display:block;font-size:.7rem;color:var(--dim);font-family:'JetBrains Mono',monospace}
+footer{padding:36px 0 46px;text-align:center;color:var(--dim);font-size:.74rem;border-top:1px solid var(--line);position:relative;z-index:2;font-family:'JetBrains Mono',monospace}
+/* simple centered divider line (replaces old scrolling ticker) */
+.dv{text-align:center;padding:14px 0;margin:30px 0;border-block:1px solid var(--line);color:var(--dim);font-size:.8rem;letter-spacing:.08em}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
+</style></head><body>
+<div id="bg"><div id="bgimg"></div><div id="grid"></div></div>
+<div id="pr"></div>
+<nav><div class="w"><a class="br m" href="#top">PR<i>_</i>SEC</a><button class="bu" id="bu" aria-label="Menu">☰</button>
+<div class="ls" id="ls"><a href="#about">About</a><a href="#arsenal">Arsenal</a><a href="#projects">Projects</a><a href="#findings">Findings</a><a href="#thm">TryHackMe</a><a href="#certs">Certs</a><a href="#ach">Achievements</a><a href="#contact">Contact</a></div></div></nav>
+
+<header class="hero" id="top"><div class="w"><div class="hg">
+<span class="st m rv"><b></b>Cybersecurity Enthusiast • Content Creator • CSE Student</span>
+
+<h1 class="rv" id="nm">Praveen Rathod (Radheya karn)</h1>
+
+<p class="role rv">
+  3rd Year CSE Student at <b>KLE Institute of Technology</b> | Cybersecurity Enthusiast
+</p>
+
+<p class="intro rv">
+  I’m a cybersecurity enthusiast who loves exploring how systems work,
+  investigating digital evidence, and turning technical knowledge into content.
+  I work with <b>Python</b>, <b>Linux</b>, <b>Windows</b>, digital forensics,
+  penetration testing, OSINT, and security tools.
+  <br><br>
+  <b>Explore. Investigate. Break. Learn. Secure. 🔐</b>
+</p>
+<div class="g tm m rv" aria-hidden="true"><div class="tb"><i></i><i></i><i></i></div><pre id="term"></pre></div>
+
+<div class="pc rv"><label class="slot ph" data-k="photo"><input type="file" accept="image/*" aria-label="Add your photo"><span class="pl"><b>+</b>Add your photo<small>set IMAGES.photo to keep it</small></span><img src="pfp.jpeg" alt="Praveen Rathod" style="display:block;width:100%;height:100%;object-fit:cover;"></label><span class="tg m">DFIR</span><span class="tg m">PENTEST</span><span class="tg m">OSINT</span></div>
+
+<div class="stats"><div class="g stat rv"><div class="n" data-n="92140">92,140</div><div class="l">TryHackMe rank · top 4%</div></div><div class="g stat rv"><div class="n" data-n="94">94</div><div class="l">rooms completed</div></div><div class="g stat rv"><div class="n" data-n="996" data-suf="th">996th</div><div class="l">team rank · Cyber Apocalypse CTF 2025</div></div><div class="g stat rv"><div class="n" data-n="18">18</div><div class="l">certifications earned</div></div></div>
+</div></div></header>
+
+<section id="about"><div class="w ab"><div class="rv"><div class="ey m">// about</div><h2>Investigation meets offense.</h2><p>I work at the intersection of investigation and offense — pulling apart disk images and browser artifacts one day, mapping a target's attack surface with OSINT tooling the next.</p><p>I write up techniques on Medium, run a security community, and build small forensics tooling in the browser — no uploads, evidence stays local.</p></div><div><div class="ey m rv">// core skills</div><div class="rings" id="rings"></div></div></div></section>
+
+<section id="arsenal"><div class="w"><div class="ey m rv">// tooling</div><h2 class="rv">Arsenal</h2><div class="mq rv" aria-hidden="true" id="mq"></div><div class="chips rv" id="tabs"></div><div class="tools" id="tools"></div></div></section>
+
+<div class="dv w rv">SEE EVERYTHING ◆ TRUST NOTHING</div>
+<section id="projects"><div class="w"><div class="ey m rv">// case files</div><h2 class="rv">Projects <span class="m" style="font-size:.8rem;color:var(--dim)">swipe →</span></h2>
+<div class="car">
+<article class="g pj"><div class="big">01</div><h3>🔐 CipherCheck</h3><p>Offline forensics tool for SHA-256 hashing and file-integrity checks. Runs entirely in the browser — tamper detection, evidence verification and duplicate comparison with no uploads.</p><div class="pills"><span class="pill">Forensics</span><span class="pill">SHA-256</span><span class="pill">JavaScript</span></div><a href="https://github.com/Praveen-cell557" target="_blank" rel="noopener">View project ↗</a></article>
+<article class="g pj"><div class="big">02</div><h3>🛡️ Cybersecurity Arsenal</h3><p>A practical knowledge base covering Linux, Windows, Red Team, Blue Team and CTFs — organized commands, tools and quick references for authorized testing.</p><div class="pills"><span class="pill">Linux</span><span class="pill">Windows</span><span class="pill">Red Team</span><span class="pill">Blue Team</span><span class="pill">CTF</span></div><a href="https://github.com/Praveen-cell557" target="_blank" rel="noopener">View project ↗</a></article>
+<article class="g pj"><div class="big">03</div><h3>🔍 Passive Recon — KLEIT</h3><p>Passive OSINT case study of kleit.ac.in using WHOIS, crt.sh, Wappalyzer, SSL Labs, Shodan, VirusTotal and Wayback Machine.</p><div class="pills"><span class="pill">OSINT</span><span class="pill">Passive Recon</span><span class="pill">Web Security</span></div><a href="https://github.com/Praveen-cell557" target="_blank" rel="noopener">View project ↗</a></article>
+<article class="g pj"><div class="big">04</div><h3>🕵️ Meridian Freight Honeypot</h3><p>Real-time cyber deception platform simulating a vulnerable employee portal to detect and visualize OWASP Top 10 attacks. Live SOC dashboard, attacker tracking and automated simulation.</p><div class="pills"><span class="pill">Honeypot</span><span class="pill">SOC</span><span class="pill">Python</span><span class="pill">Docker</span></div><a href="https://github.com/Praveen-cell557" target="_blank" rel="noopener">View project ↗</a></article>
+</div></div></section>
+
+<section id="findings"><div class="w"><div class="ey m rv">// disclosures</div><h2 class="rv">Security Findings Reported</h2>
+<div class="fg">
+<div class="g fd nat rv"><label class="slot" data-k="nta"><input type="file" accept="image/*" aria-label="Add NTA image"><span class="pl"><b>+</b>NTA image</span><img src="NTA.jpg" alt="NTA" style="display:block;"></label><div class="fb"><span class="bd">NATIONAL LEVEL</span><div class="o">NTA</div><div style="color:var(--dim);font-size:.9rem">National Testing Agency</div></div></div>
+<div class="g fd rv"><label class="slot" data-k="sgbit"><input type="file" accept="image/*" aria-label="Add SGBIT image"><span class="pl"><b>+</b>SGBIT image</span><img src="sgbit.jpeg" alt="SGBIT" style="display:block;"></label><div class="fb"><div class="o">SGBIT</div><span class="bd">VERIFIED</span></div></div>
+<div class="g fd rv"><label class="slot" data-k="kleit"><input type="file" accept="image/*" aria-label="Add KLEIT image"><span class="pl"><b>+</b>KLEIT image</span><img src="kleit.png" alt="KLEIT" style="display:block;"></label><div class="fb"><div class="o">KLEIT</div><span class="bd">VERIFIED</span></div></div>
+<div class="g fd rv"><label class="slot" data-k="iit"><input type="file" accept="image/*" aria-label="Add IIT Bombay image"><span class="pl"><b>+</b>IIT Bombay image</span><img src="iitbombay.jpg" alt="IIT Bombay" style="display:block;"></label><div class="fb"><div class="o">IIT Bombay</div><span class="bd">VERIFIED</span></div></div>
+</div></div></section>
+
+<section id="thm"><div class="w"><div class="ey m rv">// live credential</div><h2 class="rv">TryHackMe</h2>
+<div class="g th rv">
+<div class="tbd"><div style="font-weight:700;font-size:1.15rem">RadheKarn <span style="color:var(--dim);font-weight:400">[MAGE]</span></div><div style="font-size:.8rem;color:var(--dim);margin-bottom:16px"><a href="https://tryhackme.com/p/RadheKarn" target="_blank" rel="noopener">tryhackme.com/p/RadheKarn</a></div>
+<div class="rank" data-n="92140">92,140</div><div style="font-size:.78rem;color:var(--dim)">Global rank · Top 4% 🏆</div>
+<div class="ts"><div><div class="n">11</div><div class="l">Badges</div></div><div><div class="n">94</div><div class="l">Rooms</div></div><div><div class="n">35</div><div class="l">GB score</div></div></div>
+<div class="pb"><div class="fill" data-w="96"></div></div></div></div></div></section>
+
+<section id="certs"><div class="w"><div class="ey m rv">// evidence stack</div><h2 class="rv">Certifications &amp; Training</h2>
+<div class="chips rv" id="chips"><button class="chip on" data-f="">All</button><button class="chip" data-f="F">Forensics</button><button class="chip" data-f="O">Offensive</button><button class="chip" data-f="S">OSINT</button><button class="chip" data-f="A">AI / Prompting</button></div><div class="certs" id="certGrid"></div></div></section>
+
+<div class="dv w rv">SEE EVERYTHING ◆ TRUST NOTHING</div>
+<section id="ach"><div class="w"><div class="ey m rv">// leadership &amp; recognition</div><h2 class="rv">Achievements</h2>
+<div class="bt">
+<div class="g ac ft ctf rv"><div class="ai">🐉</div><div class="num" data-n="996" data-suf="th">996th</div><h3>Team Rank — Cyber Apocalypse CTF 2025</h3><p>Tales from Eldoria — placed 996th as a team in the global CTF.</p></div>
+<div class="g ac rv"><div class="ai">🏆</div><h3>Top 4% on TryHackMe</h3><p>94 rooms completed across offensive and defensive paths.</p></div>
+<div class="g ac rv"><div class="ai">🇮🇳</div><h3>National-Level Security Findings</h3><p>Reported to NTA (National level Organization).</p></div>
+<div class="g ac wd rv"><div class="ai">🎓</div><h3>Mentored &amp; trained 1000+ students</h3><p>Hands-on mentoring and training for over a thousand students.</p></div>
+<div class="g ac wd rv"><div class="ai">🚀</div><h3>Campus Ambassador — E-Cell, IIT Bombay</h3><p>Selected for the Upstox Campus Ambassador Program, driving outreach for the Cell.</p></div>
+<div class="g ac wd rv"><div class="ai">💬</div><h3>Founder — "Evil Coders"</h3><p>WhatsApp channel sharing cybersecurity content, tools and community updates.</p></div>
+</div></div></section>
+
+<section id="contact"><div class="w"><div class="ey m rv">// contact</div><h2 class="rv">Get In Touch</h2>
+<div class="g cta rv"><h3>Let's build something secure.</h3><p>Open to internships and full-time roles in digital forensics, penetration testing and threat detection. I reply fast.</p></div>
+<div class="cg">
+<a class="g cc rv" style="--c:linear-gradient(135deg,#ff2d4f,#b0102a)" href="mailto:pr9826163@gmail.com"><span class="cl">✉</span><span><small>Email</small><strong>pr9826163@gmail.com</strong></span></a>
+<a class="g cc rv" style="--c:linear-gradient(135deg,#3ddc97,#1f8f5d)" href="tel:+918310987954"><span class="cl">📞</span><span><small>Phone</small><strong>+91 8310987954</strong></span></a>
+<a class="g cc rv" style="--c:#24292f" href="https://github.com/Praveen-cell557" target="_blank" rel="noopener"><span class="cl">⌥</span><span><small>GitHub</small><strong>github.com/Praveen-cell557</strong></span></a>
+<a class="g cc rv" style="--c:#111" href="https://medium.com/@pr9826163" target="_blank" rel="noopener"><span class="cl">M</span><span><small>Medium</small><strong>medium.com/@pr9826163</strong></span></a>
+<a class="g cc rv" style="--c:linear-gradient(135deg,#ff2d4f,#7a0f24)" href="https://tryhackme.com/p/RadheKarn" target="_blank" rel="noopener"><span class="cl">🛡</span><span><small>TryHackMe</small><strong>tryhackme.com/p/RadheKarn</strong></span></a>
+<a class="g cc rv" style="--c:#25d366" href="https://whatsapp.com/channel/0029VbDVphA8kyyPlseT0f0w" target="_blank" rel="noopener"><span class="cl">💬</span><span><small>WhatsApp — Evil Coders</small><strong>Join Evil Coders</strong></span></a>
+<div class="g cc rv" style="--c:linear-gradient(135deg,#4de1ff,#2a7fff)"><span class="cl">📍</span><span><small>Location</small><strong>Vijayapura, Karnataka, India</strong></span></div>
+</div></div></section>
+<footer>PRAVEEN RATHOD — CASE FILE CLOSED.</footer>
+
+<script>
+const IMAGES={bg:"",photo:"",thm:"",nta:"",sgbit:"",kleit:"",iit:""};
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+$$('.slot').forEach(s=>{const k=s.dataset.k,im=s.querySelector('img'),set=u=>{im.src=u;s.classList.add('has')};if(IMAGES[k])set(IMAGES[k]);s.querySelector('input').onchange=e=>{const f=e.target.files[0];if(f)set(URL.createObjectURL(f))}});
+if(IMAGES.bg)$('#bgimg').style.backgroundImage=`url("${IMAGES.bg}")`;
+/* scroll progress bar */
+addEventListener('scroll',()=>{const h=document.documentElement;$('#pr').style.width=h.scrollTop/(h.scrollHeight-h.clientHeight)*100+'%'},{passive:true});
+/* mobile nav */
+const bu=$('#bu'),ls=$('#ls');bu.onclick=()=>ls.classList.toggle('o');ls.onclick=e=>{if(e.target.tagName==='A')ls.classList.remove('o')};
+/* data */
+const SK=[["Digital Forensics","disk / mobile / dark web",92],["Penetration Testing","web / network",85],["OSINT","passive recon",88],["Cybercrime Investigation","evidence handling",80],["Python","tooling",78],["Bash","scripting",75]];
+$('#rings').innerHTML=SK.map(([n,s,v])=>`<div class="g rg rv"><div class="dl" data-p="${v}"><span>0%</span></div><b>${n}</b><small>${s}</small></div>`).join('');
+const TL=[["Reconnaissance",[["NM","Nmap","Port enumeration"],["AM","Amass","Attack surface"],["SF","Subfinder","Subdomain enum"],["GB","Gobuster","Directory enum"]]],["Exploitation",[["BS","Burp Suite","Web app testing"],["MS","Metasploit","Exploit validation"],["NC","Nuclei","Vuln scanning"],["FF","ffuf","Web fuzzing"],["SQ","SQLMap","SQL injection"],["HC","Hashcat","Password cracking"]]],["Forensics",[["AU","Autopsy","Disk forensics"],["FT","FTK Imager","Disk imaging"]]]];
+const nm=TL.flatMap(g=>g[1].map(t=>t[1]));$('#mq').innerHTML=nm.map(n=>`<span>${n}</span>`).join('');
+const show=k=>{$$('#tabs .chip').forEach((c,i)=>c.classList.toggle('on',i===k));$('#tools').innerHTML=TL[k][1].map(([i,n,u])=>`<div class="g tool"><div class="ic">${i}</div><div><b>${n}</b><small>${u}</small></div></div>`).join('')};
+$('#tabs').innerHTML=TL.map(([g],i)=>`<button class="chip" data-k="${i}">${g}</button>`).join('');$('#tabs').onclick=e=>{const b=e.target.closest('.chip');if(b)show(+b.dataset.k)};show(0);
+const CL={WS:'#ff7a00',IS:'#1a73e8',TF:'#7c4dff',NC:'#0a66c2',SB:'#00b3a4',TH:'#ff2d4f',TA:'#4a55d6',GL:'#1e9bd7',GG:'#34a853',IF:'#0b75d1',EC:'#e11d2e',MS:'#8a5cf6',EI:'#f59e0b'};
+const CE=[["WS","WSCube Tech","Ethical Hacking — 2 Months","Jan–Mar 2024 · Grade A","O"],["IS","Infosec / Coursera","Digital Forensics Concepts","Sep 2024","F"],["IS","Infosec / Coursera","Windows OS Forensics","Sep 2024","F"],["TF","Techfest, IIT Bombay","Ethical Hacking Workshop","Dec 2024","O"],["TF","Techfest, IIT Bombay","Cybersecurity Workshop","Dec 2024","O"],["NC","Techfest / NASSCOM","Cyber Security — Participation","Dec 2024","O"],["SB","Security Blue Team","Introduction to OSINT","Apr 2025","S"],["SB","Security Blue Team","Introduction to Bash","Apr 2025","O"],["TH","TryHackMe","Pre Security Learning Path","Apr 2025","O"],["TA","Tata / Forage","Cybersecurity Analyst Simulation","Apr 2025","O"],["GL","Great Learning","Getting Started with ChatGPT-4","Jan 2025","A"],["GG","Google / Coursera","Google Prompting Essentials","Apr 2025","A"],["IF","Infosys Springboard","Prompt Engineering","Jun 2025","A"],["EC","EC-Council","Dark Web Forensics","Jun 2025","F"],["EC","EC-Council","Mobile Forensics","Jul 2025","F"],["EC","EC-Council","C|HFI v11","Oct 2025","F"],["MS","Mgmt & Strategy Institute","Business Management Essentials","Oct 2025",""],["EI","E-Cell IIT Bombay / Upstox","Campus Ambassador","Jun 2025",""]];
+$('#certGrid').innerHTML=CE.map(([i,a,t,d,c])=>`<div class="g cert rv" data-c="${c}"><div class="lg" style="--c:${CL[i]}">${i}</div><div><small>${a}</small><b>${t}</b><span>${d}</span></div></div>`).join('');
+$('#chips').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;$$('#chips .chip').forEach(x=>x.classList.toggle('on',x===b));const f=b.dataset.f;$$('.cert').forEach(c=>c.classList.toggle('hide',!!f&&c.dataset.c!==f))};
+/* reveal on scroll — one-time, simple fade + one-time counters/dials/bars */
+const anim=(fn,ms)=>{let s=null;const f=t=>{s=s||t;const p=Math.min((t-s)/ms,1);fn(1-Math.pow(1-p,3));if(p<1)requestAnimationFrame(f)};requestAnimationFrame(f)};
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const t=e.target;t.classList.add('in');
+t.querySelectorAll('.fill').forEach(f=>f.style.width=f.dataset.w+'%');
+t.querySelectorAll('.dl').forEach(d=>anim(k=>{d.style.setProperty('--p',d.dataset.p*k);d.firstChild.textContent=Math.round(d.dataset.p*k)+'%'},900));
+[t,...t.querySelectorAll('[data-n]')].filter(x=>x.dataset&&x.dataset.n).forEach(n=>{const to=+n.dataset.n,su=n.dataset.suf||'';anim(k=>{const v=Math.round(to*k);n.textContent=(to>9999?v.toLocaleString('en-US'):v)+su},900)});
+io.unobserve(t)}),{threshold:.15});
+$$('.rv').forEach(el=>io.observe(el));
+/* terminal — rendered instantly, no typing effect */
+const L=[["$ whoami","c"],["praveen-rathod · dfir / pentest / osint","h"],["$ cat education.txt","c"],["KLE Institute of Technology · CSE '28","h"],["$ ctf --rank","c"],["996th team · Cyber Apocalypse 2025","h"],["$ tryhackme --rank","c"],["#92,140 · top 4% · 94 rooms","h"],["$ disclosures --list","c"],["NTA · SGBIT · KLEIT · IIT Bombay","h"]];
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+$('#term').innerHTML=L.map(([t,c])=>`<span class="${c}">${esc(t)}</span>`).join('\n');
+</script></body></html>
